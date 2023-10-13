@@ -2452,8 +2452,17 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+# introspection
+gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'))
+enable_gir = get_option('introspection').allowed() and gir_scanner.found() and meson.can_run_host_binaries()
+gir_args = [
+  '--quiet',
+]
+
 pkg = import('pkgconfig')
 windows = import('windows')
+gnome = import('gnome')
+
 subdir('tools')
 subdir('glib')
 subdir('gobject')
@@ -2575,4 +2584,5 @@ summary({
   'glib_checks' : get_option('glib_checks'),
   'libelf' : get_option('libelf'),
   'multiarch' : get_option('multiarch'),
+  'introspection' : enable_gir,
 }, section: 'Options')
