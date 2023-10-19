@@ -33,14 +33,15 @@ test_pipe (void)
   GError *error = NULL;
   int pipefd[2];
   char buf[1024];
-  gssize bytes_read;
+  gssize bytes_read, bytes_written;
   gboolean res;
 
   res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
   g_assert (res);
   g_assert_no_error (error);
 
-  write (pipefd[1], "hello", sizeof ("hello"));
+  bytes_written = write (pipefd[1], "hello", sizeof ("hello"));
+  g_assert (bytes_written != -1 && "write() failed");
   memset (buf, 0, sizeof (buf));
   bytes_read = read (pipefd[0], buf, sizeof(buf) - 1);
   g_assert_cmpint (bytes_read, >, 0);

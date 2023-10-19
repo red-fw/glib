@@ -32,6 +32,9 @@ else
 endif
 
 host_system = host_machine.system()
+if host_system == 'mingw32'
+  host_system = 'windows'
+endif
 
 if host_system == 'darwin'
   ios_test_code = '''#include <TargetConditionals.h>
@@ -1772,7 +1775,7 @@ endforeach
 # that then to silently fall back on emulated atomic ops just because
 # the user had the wrong build environment.
 atomictest = '''int main() {
-  volatile int atomic = 2;
+  int atomic = 2;
   __sync_bool_compare_and_swap (&atomic, 2, 3);
   return 0;
 }
@@ -1787,7 +1790,7 @@ atomicdefine = '''
 # We know that we can always use real ("lock free") atomic operations with MSVC
 if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl' or cc.links(atomictest, name : 'atomic ops')
   have_atomic_lock_free = true
-  if cc.get_id() == 'gcc' and not cc.compiles(atomicdefine, name : 'atomic ops define')
+  if (cc.get_id() == 'gcc' or cc.get_id() == 'clang') and not cc.compiles(atomicdefine, name : 'atomic ops define')
     # Old gcc release may provide
     # __sync_bool_compare_and_swap but doesn't define
     # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
@@ -1882,6 +1885,7 @@ endif
 
 # FIXME: we should make it print the result and always return 0, so that
 # the output in meson shows up as green
+# volatile is needed here to avoid optimisations in the test
 stack_grows_check_prog = '''
   volatile int *a = 0, *b = 0;
   void f (int i) {

@@ -293,6 +293,10 @@ msgstr ""
 	    CATOBJEXT=.mo
             DATADIRNAME=share
 	    ;;
+	    *-*-musl* | *-*-linux-uclibc*)
+	    CATOBJEXT=.gmo
+            DATADIRNAME=share
+	    ;;
 	    *)
 	    CATOBJEXT=.mo
             DATADIRNAME=lib

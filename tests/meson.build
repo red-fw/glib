@@ -73,7 +73,7 @@ test_extra_programs = {
   'unicode-collate' : {},
 }
 
-if host_machine.system() != 'windows'
+if host_system != 'windows'
   tests += {
     'timeloop' : {},
     'iochannel-test' : {},

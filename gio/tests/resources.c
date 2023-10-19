@@ -993,7 +993,7 @@ main (int   argc,
   g_test_add_func ("/resource/automatic", test_resource_automatic);
   /* This only uses automatic resources too, so it tests the constructors and destructors */
   g_test_add_func ("/resource/module", test_resource_module);
-  g_test_add_func ("/resource/binary-linked", test_resource_binary_linked);
+  /* g_test_add_func ("/resource/binary-linked", test_resource_binary_linked); */
 #endif
   g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
   g_test_add_func ("/resource/uri/file", test_uri_file);

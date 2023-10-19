@@ -138,7 +138,7 @@ if glib_conf.has('HAVE_EVENTFD')
   }
 endif
 
-if host_machine.system() == 'windows'
+if host_system == 'windows'
   if winsock2.found()
     glib_tests += {
       'gpoll' : {
